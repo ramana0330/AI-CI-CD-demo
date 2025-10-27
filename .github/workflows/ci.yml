@@ -1,0 +1,41 @@
+name: CI - AI Release Notes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: |
+          cd app
+          npm install
+
+      - name: Run basic test
+        run: |
+          echo "Running test script"
+          node -e "console.log('✅ Node.js works fine!')"
+
+      - name: Generate AI release notes
+        run: |
+          cd app
+          if [ -f scripts/generate_release_notes.js ]; then
+            node scripts/generate_release_notes.js
+          else
+            echo "Fallback: No release_notes.js found, skipping."
+          fi
+
+      - name: Done
+        run: echo "✅ Workflow finished successfully"
