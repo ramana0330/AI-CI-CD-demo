@@ -1,0 +1,34 @@
+name: CD - AI Rollback Suggestion
+
+on:
+  workflow_dispatch:  # This allows manual trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Simulate deployment
+        run: |
+          echo "Starting fake deployment..."
+          echo "❌ Deployment failed: simulated error for demo" > deploy_log.txt
+          cat deploy_log.txt
+
+      - name: Generate rollback suggestions
+        run: |
+          echo "Generating rollback suggestion using AI..."
+          cd app
+          if [ -f scripts/generate_rollback_suggestion.js ]; then
+            node scripts/generate_rollback_suggestion.js
+          else
+            echo "Fallback: no rollback_suggestion.js found, using sample suggestions"
+            echo "Suggested rollback commands:"
+            echo "- kubectl rollout undo deployment/my-app"
+            echo "- docker tag previous_version current_version"
+          fi
+
+      - name: Finish
+        run: echo "✅ CD Workflow completed (demo rollback step shown above)"
