@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -22,15 +23,15 @@ jobs:
           cd app
           npm install
 
-      - name: Run basic tests
+      - name: Run basic test
         run: |
           echo "Running sample test"
           node -e "console.log('✅ Node is working fine!')"
 
       - name: Generate AI release notes
         run: |
-          echo "Generating release notes..."
-          node app/scripts/generate_release_notes.js || echo "Fallback release note generated"
+          cd app
+          node scripts/generate_release_notes.js || echo "Fallback release note generated"
 
       - name: Show commit message
         run: echo "✅ CI workflow completed for commit: ${{ github.sha }}"
