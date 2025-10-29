@@ -32,10 +32,10 @@ jobs:
         run: |
           cd app
           if [ -f scripts/generate_release_notes.js ]; then
+            echo "Running AI release note generator..."
             node scripts/generate_release_notes.js
           else
-            echo "Fallback: No release_notes.js found, skipping."
+            echo "⚠️  Fallback: generate_release_notes.js not found, skipping"
           fi
-
-      - name: Done
-        run: echo "✅ Workflow finished successfully"
+          echo "-----------------------------"
+          echo "✅ Release note generation step finished"
